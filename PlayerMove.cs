@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerMove : MonoBehaviour
 {
     Player_IA _controls;
+    Player _player;
     CharacterController _controller;
     Animator _animator;
 
@@ -26,17 +27,15 @@ public class PlayerMove : MonoBehaviour
     Vector2 _moveInput;
     Vector2 _aimInput;
 
-    void Awake()
-    {
-        AssignMovementEvents();
-    }
-
     void Start()
     {
+        _player = GetComponent<Player>();
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
 
         _moveSpeed = _walkSpeed;
+
+        AssignMovementEvents();
     }
 
     void Update()
@@ -100,10 +99,9 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    #region Input System
     void AssignMovementEvents()
     {
-        _controls = new Player_IA();
+        _controls = _player.Controls;
 
         _controls.onFoot.move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
         _controls.onFoot.move.canceled += ctx => _moveInput = Vector2.zero;
@@ -123,16 +121,4 @@ public class PlayerMove : MonoBehaviour
             _moveSpeed = _walkSpeed;
         };
     }
-
-    void OnEnable()
-    {
-        _controls.Enable();
-    }
-
-    void OnDisable()
-    {
-        _controls.Disable();
-    }
-
-    #endregion
 }
