@@ -77,7 +77,10 @@ public class PlayerWpVisual : MonoBehaviour
     {
         _animator.SetInteger("GrabType", (int)grabType);
         _isGrabbingWp = true;
-        _leftHandIK.weight = 0;
+        
+        if(_leftHandIK)
+            _leftHandIK.weight = 0;
+
         _animator.SetTrigger("Grab");
         SetBusyGrabbingWp(true);
     }
